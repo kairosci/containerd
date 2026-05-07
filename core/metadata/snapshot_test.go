@@ -525,7 +525,7 @@ func (s *remoteSimulator) View(ctx context.Context, key, parent string, opts ...
 
 func TestPrepareWithParentChainIDLabel(t *testing.T) {
 	ctx, db := testDB(t, withSnapshotter("remote", func(string) (snapshots.Snapshotter, error) {
-		return &remoteSimulator{tmpSnapshotter: NewTmpSnapshotter()}, nil
+		return &remoteSimulator{tmpSnapshotter: NewTmpSnapshotter().(*tmpSnapshotter)}, nil
 	}))
 	snapshotter := "remote"
 	ctx1, _ := snapshotLease(ctx, t, db, snapshotter)

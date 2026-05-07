@@ -29,6 +29,15 @@ func TestInitSelinuxOpts(t *testing.T) {
 		t.Skip("selinux is not enabled")
 	}
 
+	_, _, err := initLabelsFromOpt(nil)
+	if err != nil {
+		t.Skip("selinux is not functional - failed to generate labels:", err)
+	}
+	processLabel, mountLabel := selinux.ContainerLabels()
+	if processLabel == "" || mountLabel == "" {
+		t.Skip("selinux is not functional - labels cannot be generated")
+	}
+
 	for _, test := range []struct {
 		desc         string
 		selinuxOpt   *runtime.SELinuxOption

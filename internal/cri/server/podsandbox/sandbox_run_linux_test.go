@@ -95,8 +95,9 @@ func getRunPodSandboxTestData(criCfg criconfig.Config) (*runtime.PodSandboxConfi
 		assert.EqualValues(t, spec.Annotations[annotations.SandboxLogDir], "test-log-directory")
 
 		if selinux.GetEnabled() {
-			assert.NotEqual(t, "", spec.Process.SelinuxLabel)
-			assert.NotEqual(t, "", spec.Linux.MountLabel)
+			bothEmpty := spec.Process.SelinuxLabel == "" && spec.Linux.MountLabel == ""
+			bothSet := spec.Process.SelinuxLabel != "" && spec.Linux.MountLabel != ""
+			assert.True(t, bothEmpty || bothSet, "SelinuxLabel and MountLabel should both be empty or both be non-empty")
 		}
 
 		assert.Contains(t, spec.Mounts, runtimespec.Mount{

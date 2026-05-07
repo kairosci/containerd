@@ -359,6 +359,7 @@ func (s *snapshotter) createSnapshot(ctx context.Context, key, parent string, re
 		} else if parentChainID := base.Labels["containerd.io/snapshot/parent-chain-id"]; parentChainID != "" {
 			pbkt := bkt.Bucket([]byte(parentChainID))
 			if pbkt != nil {
+				parent = parentChainID
 				bparent = string(pbkt.Get(bucketKeyName))
 			}
 		}
